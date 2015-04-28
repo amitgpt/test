@@ -1,25 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Test:Laravel 5</title>
-
-    <!-- Bootstrap -->
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/css/style.css" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-	<div class="container">    
+   
         <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
             <div class="panel panel-info" >
                     <div class="panel-heading">
@@ -27,19 +6,33 @@
                     </div>     
 
                     <div style="padding-top:30px" class="panel-body" >
-
+							
+							@if(Session::has('message'))
+								<div class="alert alert-info red">{{session::get('message')}}</div>
+							@endif
+							@if (count($errors) > 0)
+							<div class="alert alert-danger">
+								<strong>Whoops!</strong> There were some problems with your input.<br><br>
+								<ul>
+									@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
+									@endforeach
+								</ul>
+							</div>
+						@endif
                         <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
                             
-                        <form id="loginform" class="form-horizontal" role="form">
+                        <form action="/auth/login" method="post" id="loginform" class="form-horizontal" role="form">
+							<input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     
                             <div style="margin-bottom: 25px" class="input-group">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-								<input id="login-username" type="text" class="form-control" name="username" value="" placeholder="username or email">                                        
+								<input id="login-username" type="email" class="form-control" name="email" value="" placeholder="email" required>                                        
 							</div>
 						
                             <div style="margin-bottom: 25px" class="input-group">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-								<input id="login-password" type="password" class="form-control" name="password" placeholder="password">
+								<input id="login-password" type="password" class="form-control" name="password" placeholder="password" required>
 							</div>
 
                             <div class="input-group">
@@ -64,7 +57,7 @@
                                     <div class="col-md-12 control">
                                         <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
                                             Don't have an account! 
-                                        <a href="{{ url('/auth/register') }}">
+                                        <a href="{{ url('/register') }}">
                                             Sign Up Here
                                         </a>
                                         </div>
@@ -74,13 +67,4 @@
                         </div>                     
                     </div>  
 			</div>
-     </div>
-    
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/assets/js/bootstrap.min.js"></script>
-  </body>
-</html>
-
+     

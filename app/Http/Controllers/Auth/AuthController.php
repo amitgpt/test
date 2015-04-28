@@ -42,6 +42,6 @@ class AuthController extends Controller {
 	//create register view
 	public function getRegister(){
 		
-		return view('auth.register');
+		return view('auth/register');
 	}
 }

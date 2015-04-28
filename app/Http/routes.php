@@ -15,9 +15,34 @@
 
 //Route::get('home', 'HomeController@index');
 
-Route::controllers([
+/*Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
 
+*/
+
+
+Route::group((['prefix' => '']), function (){
+	
+	Route::get('/', 'AuthController@loginView');
+		
+	Route::get('register','AuthController@registerView');
+
+});
+
+Route::group((['prefix' => 'auth']), function (){
+	
+	Route::post('login', 'AuthController@loginView');
+		
+	Route::post('register','AuthController@register');
+
+});
+
+Route::get('logout',function(){
+	
+	
+});
+	
+   
 

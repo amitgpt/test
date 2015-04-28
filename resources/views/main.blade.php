@@ -1,6 +1,8 @@
 @extends('layouts.admin')
-@section('contant')
+@section('content')
 	@if($page=='login')
 		@include('auth.login')
+	@elseif($page=='register')
+		@include('auth.register')
 	@endif
 @stop
