@@ -30,7 +30,8 @@ class WelcomeController extends Controller {
 	 */
 	public function index()
 	{
-		return view('welcome');
+		echo 'ash';
+		//return view('main')->with('page','index');
 	}
 
 }

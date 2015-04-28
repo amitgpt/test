@@ -21,7 +21,14 @@
 ]);
 
 */
-
+Route::get('test',function(){
+	
+		//$getUrl = "https://api.github.com/users/amitgpt";
+		//print_r(file_get_contents($getUrl));
+		return view('main')->with('page','setting');
+		
+	
+});
 
 Route::group((['prefix' => '']), function (){
 	
@@ -31,18 +38,26 @@ Route::group((['prefix' => '']), function (){
 
 });
 
+
+
 Route::group((['prefix' => 'auth']), function (){
 	
-	Route::post('login', 'AuthController@loginView');
+	Route::post('login', 'AuthController@login');
 		
 	Route::post('register','AuthController@register');
 
 });
 
+Route::get('index','AuthController@index');
+Route::get('setting','AuthController@settingView');
+Route::post('setting','AuthController@setting');
+
 Route::get('logout',function(){
 	
-	
-});
+	Auth::logout();
+	return Redirect('/');
+	});
+
 	
    
 

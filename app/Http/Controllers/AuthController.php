@@ -12,6 +12,13 @@ use Input;
 use App\User;
 use Session;
 use Hash;
+use Auth;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Message\Response;
+use Guzzle\Http\EntityBody;
+
+   
 
 class AuthController extends Controller {
 
@@ -32,6 +39,7 @@ class AuthController extends Controller {
 	 */
 	public function login()
 	{
+		
 		$validator = Validator::make(
 									 [
 											'email'		 	 =>  Input::get('email'),
@@ -55,8 +63,16 @@ class AuthController extends Controller {
 					'password' => Input::get('password'));
             	
 				if(Auth::attempt($userdata))
-				{
-						echo 'login';
+				{	$getGitName = User::find(Auth::id());
+					$gitname = $getGitName->git_name;
+					if($gitname)
+					{
+						 return redirect('index');
+					}
+					else{
+						return redirect('setting');
+					}
+						//return redirect('index');
 				}else{
 						
 						Session::flash('message', 'email or password is wrong');
@@ -121,4 +137,94 @@ class AuthController extends Controller {
 			
 		
 	}
+	
+	
+	public function index(){
+			return view('main')->with('page','index');
+		
+	}
+	
+	public function settingView(){
+			return view('main')->with('page','setting');
+	}
+	
+	public function setting(){
+		
+			$gitName = Input::get('gitname'); 
+			
+			
+			$client = new Client('https://api.github.com');
+			// $request = $client->post('authorizations', array($gitName)); 
+				$response = $request->send();
+			$body = json_decode($response->getBody(true));
+			
+			
+			
+			
+			
+			// $request = $client->createRequest('GET', 'https://api.github.com/users/'.$gitName);
+			// $response = $client->send($request);
+			 
+		//	 $response = $client->get('GET', 'https://api.github.com/users/'.$gitName);
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			//$client = new Client();
+			//$request = $client->get('GET','https://api.github.com/users/'.$gitName);
+			//echo $request->getUrl();
+			//die;
+			//$request = $client->createRequest('GET', 'https://api.github.com/users/'.$gitName);
+			
+			//$response = $client->send($request);
+			//$response = $client->get('GET', 'https://api.github.com/users/'.$gitName);
+			//$json = $response->json();
+			//echo'<pre>';
+			//print_r($json);
+			//die;
+
+			/*try {
+				 $client->createRequest('GET', 'https://api.github.com/users/'.$gitName);
+			} catch (RequestException $e) {
+				echo $e->getRequest() . "\n";
+				if ($e->hasResponse()) {
+					echo $e->getResponse() . "\n";
+				}
+			}
+			*/
+			
+			
+			
+			
+			
+			
+			
+			/*$client = new Client();
+			//$request = $client->createRequest('GET', 'https://api.github.com/users/'.$gitName);
+			
+			//$response = $client->send($request);
+			$response = $client->get('GET', 'https://api.github.com/users/'.$gitName);
+			$json = $response->json();
+			echo'<pre>';
+			print_r($json);
+			die;
+			
+			*/
+			 /* $client = new Client();
+				$res = $client->get('https://api.github.com/users/amitgpt');
+				echo $res->getStatusCode();
+				// "200"
+				echo $res->getHeader('content-type');
+				// 'application/json; charset=utf8'
+				echo $res->getBody();
+				// {"type":"User"...'
+				var_export($res->json());
+			*/
+			
+	}
+	
 }
